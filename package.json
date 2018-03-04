@@ -1,0 +1,21 @@
+{
+  "name": "MVC currency converter",
+  "version": "1.0.0",
+  "description": "Simple currency converter built on MVC pattern",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode=development",
+    "start": "webpack-dev-server --mode=development"
+  },
+  "author": "Stepan Naumov",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "css-loader": "^0.28.10",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.20.2",
+    "webpack": "^4.0.1",
+    "webpack-dev-server": "^3.1.0"
+  }
+}

@@ -1,0 +1,14 @@
+.widget {
+    border: 1px solid black;
+    padding: 20px;
+    width: 265px;
+
+    &__form {
+        display: flex;
+        flex-flow: column;
+    }
+
+    &__input {
+        display: flex;
+    }
+}
