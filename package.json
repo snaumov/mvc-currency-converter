@@ -1,5 +1,5 @@
 {
-  "name": "MVC currency converter",
+  "name": "MVC-currency-converter",
   "version": "1.0.0",
   "description": "Simple currency converter built on MVC pattern",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^2.23.6",
+    "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^0.28.10",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.7",
