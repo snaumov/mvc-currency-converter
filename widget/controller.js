@@ -1,29 +1,53 @@
-const baseApi = 'https://api.fixer.io/latest?base=';
-const RUB = 'RUB';
-const USD = 'USD';
+import {convertApi, allCurrenciesApi} from './constants';
 
 export class Controller {
     constructor(model) {
         this.model = model;
     }
 
-    fetchData(baseCurrency, currencyAmount) {
+    init() {
+        Promise.all([
+            this.fetchCurrencies(),
+            this.fetchRate(this.model.data.from, this.model.data.to)
+        ])
+            .then(([rates, rate]) => this.model.updateData({...this.model.data, currencies: Object.keys(rates), rate}));
+    }
+
+    fetchRate(from, to) {
         return new Promise((res) => {
-            if(baseCurrency === RUB) {
-                fetch(`${baseApi}${baseCurrency}&symbols=${USD}`)
-                    .then(res => res.json())
-                    .then(data => res({[USD]: data.rates[USD] * currencyAmount}));
-            }
-            else {
-                fetch(`${baseApi}${baseCurrency}&symbols=${RUB}`)
-                    .then(res => res.json())
-                    .then(data => res({[RUB]: data.rates[RUB] * currencyAmount}))
-            }
+            fetch(`${convertApi}${from}_${to}`)
+                .then(data => data.json())
+                .then(data => {res(data.results[`${from}_${to}`].val)})
         })
     }
 
-    handleChange(currency, newAmount) {
-        this.fetchData(currency, newAmount)
-            .then((data) => this.model.updateData({[currency]: newAmount, ...data}))
+    fetchCurrencies() {
+        return new Promise((res) => {
+            fetch(`${allCurrenciesApi}`)
+                .then(res => res.json())
+                .then(data => res(data.results))
+        })
+    }
+
+    handleInputChange(input, newAmount) {
+        if(input === 'from') {
+            this.model.updateData({...this.model.data, fromAmount: newAmount, toAmount: newAmount * this.model.data.rate})
+        }
+
+        if(input === 'to') {
+            this.model.updateData({...this.model.data, toAmount: newAmount, fromAmount: newAmount * (1 / this.model.data.rate)})
+        }
+    }
+
+    handleSelectChange(select, newValue) {
+        if(select === 'from') {
+            this.fetchRate(newValue, this.model.data.to)
+                .then(rate => this.model.updateData({...this.model.data, from: newValue, rate, toAmount: this.model.data.fromAmount * rate}));
+        }
+
+        if(select === 'to') {
+            this.fetchRate(this.model.data.from, newValue)
+                .then(rate => this.model.updateData({...this.model.data, to: newValue, rate, fromAmount: this.model.data.toAmount * (1 / rate)}));
+        }
     }
 }

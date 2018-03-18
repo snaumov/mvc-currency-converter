@@ -7,6 +7,7 @@ const model = new Model();
 const controller = new Controller(model);
 const widget = new Widget(model, controller);
 
+controller.init();
 const widgetView = widget.render({});
 
 const container = document.getElementById('app');

@@ -2,8 +2,12 @@ export class Model {
     constructor() {
         this.subscribers = [];
         this.data = {
-            'rub': 0,
-            'usd': 0
+            'from': 'USD',
+            'to': 'EUR',
+            'fromAmount': 0,
+            'toAmount': 0,
+            'rate': 0,
+            currencies: ['USD', 'EUR']
         };
     }
 
